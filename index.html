@@ -1,118 +1,297 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HASHAMATLI SURILAR 🇺🇿</title>
-  <link rel="icon" href="https://yusuf1.neocities.org/7.png" />
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Poppins", sans-serif; }
-    body {
-      background: linear-gradient(135deg, #000000, #1a1a1a);
-      color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      overflow: hidden;
-      transition: all 0.6s ease;
-    }
-
-    h1 {
-      font-size: 2em;
-      letter-spacing: 2px;
-      text-align: center;
-      margin-bottom: 20px;
-      animation: fadeIn 2s ease;
-    }
-
-    .logo {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-bottom: 20px;
-      box-shadow: 0 0 25px gold;
-      animation: pulse 2s infinite ease-in-out;
-    }
-
-    .btns {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      margin-top: 15px;
-      width: 80%;
-      max-width: 320px;
-    }
-
-    .btn {
-      background: linear-gradient(90deg, gold, #ffcc00);
-      color: #000;
-      padding: 15px;
-      border-radius: 12px;
-      text-align: center;
-      font-weight: 600;
-      text-decoration: none;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 20px gold;
-    }
-
-    .loader {
-      border: 5px solid rgba(255, 255, 255, 0.1);
-      border-top: 5px solid gold;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      animation: spin 1.5s linear infinite;
-      margin-bottom: 15px;
-    }
-
-    @keyframes spin { 100% { transform: rotate(360deg); } }
-    @keyframes pulse { 0%, 100% { box-shadow: 0 0 25px gold; } 50% { box-shadow: 0 0 5px gold; } }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-    footer {
-      position: absolute;
-      bottom: 10px;
-      font-size: 0.8em;
-      color: #ccc;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hashamatli Surilar</title>
+    
+    <!-- PWA Meta tags -->
+    <meta name="description" content="Premium surilar kolleksiyasi - Hashamatli Surilar">
+    <meta name="theme-color" content="#5D5CDE">
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiSGFzaGFtYXRsaSBTdXJpbGFyIiwic2hvcnRfbmFtZSI6IlN1cmlsYXIiLCJzdGFydF91cmwiOiIuIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJ0aGVtZV9jb2xvciI6IiM1RDVDREUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiI2ZmZmZmZiIsImljb25zIjpbeyJzcmMiOiJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUI3YVdSMGFEMGlNalFpSUdobGFXZG9kRDBpTWpRaUlIWnBaWGRDYjNnOUlqQWdNQ0F5TkNBeU5DSWdabWxzYkQwaVl6VmtOME5FUlNJK1BIQmhkR2dnWkQwaVRURXlJRElNVEV6dU1Ea2dPQzR5Tmt3eU1pQTVUREV6TGpBNUlEa3VOelJNTVRJZ01UWk1NVEF1T1RFZ09TNDNORXd5SURqTU1UQXVPVEVnT0M0eU5rd3hNaUF5V2lJdlBqd3ZjM1puUGc9PSIsInNpemVzIjoiMTkyeDE5MiIsInR5cGUiOiJpbWFnZS9zdmcreG1sIn1dfQ==">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5D5CDE',
+                        gold: '#FFD700',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Custom animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in-up {
+            animation: fadeInUp 0.5s ease-out;
+        }
+        
+        @keyframes loadingBar {
+            0% { width: 0%; }
+            50% { width: 70%; }
+            100% { width: 100%; }
+        }
+        
+        /* Install prompt styles */
+        .install-prompt {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #5D5CDE, #EC4899);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            box-shadow: 0 10px 25px rgba(93, 92, 222, 0.3);
+            z-index: 1000;
+            display: none;
+        }
+    </style>
 </head>
-<body>
-
-  <div id="loading">
-    <div class="loader"></div>
-    <p>Yuklanmoqda...</p>
-  </div>
-
-  <div id="content" style="display:none;">
-    <img src="https://yusuf1.neocities.org/7.png" alt="logo" class="logo">
-    <h1>HASHAMATLI SURILAR 🇺🇿</h1>
-
-    <div class="btns">
-      <a href="https://t.me/hashamatlisurilar" class="btn" target="_blank">📱 Telegram</a>
-      <a href="https://www.instagram.com/hashamatlisurilar" class="btn" target="_blank">📸 Instagram</a>
-      <a href="https://wa.me/998901234567" class="btn" target="_blank">💬 WhatsApp</a>
+<body class="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-gray-900 dark:to-purple-900 min-h-screen transition-colors duration-300">
+    
+    <!-- Install Prompt -->
+    <div id="installPrompt" class="install-prompt">
+        <div class="flex items-center space-x-3">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z"/>
+            </svg>
+            <span class="text-sm font-medium">Ilovani telefonga o'rnatish</span>
+            <button id="installBtn" class="bg-white text-purple-600 px-3 py-1 rounded-full text-xs font-semibold">
+                O'rnatish
+            </button>
+            <button id="dismissBtn" class="text-white/80 hover:text-white">✕</button>
+        </div>
     </div>
-  </div>
 
-  <footer>© 2025 HASHAMATLI SURILAR</footer>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="fixed inset-0 bg-white dark:bg-gray-900 flex items-center justify-center z-50">
+        <div class="text-center fade-in-up">
+            <div class="w-32 h-32 mx-auto mb-8 rounded-full shadow-2xl animate-pulse overflow-hidden">
+                <img src="https://yusuf1.neocities.org/7.png" alt="Hashamatli Surilar Logo" class="w-full h-full object-cover">
+            </div>
+            <h1 class="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
+                HASHAMATLI SURILAR
+            </h1>
+            <p class="text-gray-600 dark:text-gray-400">Eng sifatli surilar...</p>
+            <div class="mt-6">
+                <div class="w-48 h-2 bg-gray-200 dark:bg-gray-700 rounded-full mx-auto overflow-hidden">
+                    <div class="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full" style="width: 0%; animation: loadingBar 3s ease-in-out infinite;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-  <script>
-    // Loading animatsiya tugashi
-    window.addEventListener("load", () => {
-      setTimeout(() => {
-        document.getElementById("loading").style.display = "none";
-        document.getElementById("content").style.display = "flex";
-      }, 1500);
-    });
-  </script>
+    <!-- Main Content -->
+    <div id="mainContent" class="hidden">
+        <!-- Header -->
+        <header class="bg-white dark:bg-gray-800 shadow-lg sticky top-0 z-40 transition-colors duration-300">
+            <div class="container mx-auto px-4 py-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <img src="https://yusuf1.neocities.org/7.png" alt="Logo" class="w-12 h-12 rounded-full shadow-lg object-cover">
+                        <div>
+                            <h1 class="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                                HASHAMATLI SURILAR
+                            </h1>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Premium an'anaviy mebel</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2 text-primary font-semibold">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                        </svg>
+                        <span class="text-lg">+99899 511 51 54</span>
+                    </div>
+                </div>
+            </div>
+        </header>
 
-</body>
-</html>
+        <!-- Hero Section -->
+        <section class="py-20 px-4">
+            <div class="container mx-auto text-center">
+                <h2 class="text-5xl font-bold text-gray-800 dark:text-white mb-6 fade-in-up">
+                    Hashamatli <span class="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Surilar</span>
+                </h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto fade-in-up">
+                    Eng sifatli yog'och materiallardan tayyorlangan an'anaviy o'zbek surilari. 
+                    Har bir mahsulot qo'lda ishlov berilgan va noyob dizaynga ega.
+                </p>
+                <div class="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-600 dark:text-gray-400 fade-in-up">
+                    <div class="flex items-center space-x-2">
+                        <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span>Sifat kafolati</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <svg class="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M3 3h2l.4 2M7 13h10l4-8H5.4m-.4-2H1m6 16a2 2 0 100-4 2 2 0 000 4zm10 0a2 2 0 100-4 2 2 0 000 4z"/>
+                        </svg>
+                        <span>Bepul yetkazib berish</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <svg class="w-5 h-5 text-purple-500" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <span>Premium sifat</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Products Section -->
+        <section class="py-16 px-4 bg-white dark:bg-gray-800 transition-colors duration-300">
+            <div class="container mx-auto">
+                <h3 class="text-4xl font-bold text-center text-gray-800 dark:text-white mb-12">
+                    Bizning <span class="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Mahsulotlar</span>
+                </h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Product 1: DOLANALIK -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                        <div class="relative overflow-hidden">
+                            <img src="https://yusuf1.neocities.org/1.jpg" alt="DOLANALIK" class="w-full h-64 object-cover transition-transform duration-300 hover:scale-110">
+                            <div class="absolute top-4 right-4 bg-purple-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                                Premium
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h4 class="text-2xl font-bold text-gray-800 dark:text-white mb-3">DOLANALIK</h4>
+                            <p class="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">
+                                Oyog'i yong'oq qolgan joyi rasiyiski sasnadan yasalgan
+                            </p>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-3xl font-bold text-primary">3.600.000</span>
+                                <span class="text-gray-500 dark:text-gray-400">so'm</span>
+                            </div>
+                            <button class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-xl font-semibold hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105">
+                                Buyurtma berish
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Product 2: DLALIK -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                        <div class="relative overflow-hidden">
+                            <img src="https://yusuf1.neocities.org/2.jpg" alt="DLALIK" class="w-full h-64 object-cover transition-transform duration-300 hover:scale-110">
+                            <div class="absolute top-4 right-4 bg-purple-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                                Premium
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h4 class="text-2xl font-bold text-gray-800 dark:text-white mb-3">DLALIK</h4>
+                            <p class="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">
+                                Oyog'i yong'oq qolgan joyi rasiyiski sasnadan yasalgan
+                            </p>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-3xl font-bold text-primary">4.200.000</span>
+                                <span class="text-gray-500 dark:text-gray-400">so'm</span>
+                            </div>
+                            <button class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-xl font-semibold hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105">
+                                Buyurtma berish
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Product 3: GLADKIY -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                        <div class="relative overflow-hidden">
+                            <img src="https://yusuf1.neocities.org/3.jpg" alt="GLADKIY" class="w-full h-64 object-cover transition-transform duration-300 hover:scale-110">
+                            <div class="absolute top-4 right-4 bg-gold text-white px-3 py-1 rounded-full text-sm font-semibold">
+                                VIP
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h4 class="text-2xl font-bold text-gray-800 dark:text-white mb-3">GLADKIY</h4>
+                            <p class="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">
+                                Oyog'i yong'oq qolgan joyi rasiyiski sasnadan yasalgan
+                            </p>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-3xl font-bold text-primary">6.000.000</span>
+                                <span class="text-gray-500 dark:text-gray-400">so'm</span>
+                            </div>
+                            <button class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-xl font-semibold hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105">
+                                Buyurtma berish
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Product 4: KARONA -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                        <div class="relative overflow-hidden">
+                            <img src="https://yusuf1.neocities.org/4.jpg" alt="KARONA" class="w-full h-64 object-cover transition-transform duration-300 hover:scale-110">
+                            <div class="absolute top-4 right-4 bg-gold text-white px-3 py-1 rounded-full text-sm font-semibold">
+                                VIP
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h4 class="text-2xl font-bold text-gray-800 dark:text-white mb-3">KARONA</h4>
+                            <p class="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">
+                                Oyog'i yong'oq qolgan joyi rasiyiski sasnadan yasalgan
+                            </p>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-3xl font-bold text-primary">6.500.000</span>
+                                <span class="text-gray-500 dark:text-gray-400">so'm</span>
+                            </div>
+                            <button class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-xl font-semibold hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105">
+                                Buyurtma berish
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="py-16 px-4 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-gray-900 dark:to-purple-900 transition-colors duration-300">
+            <div class="container mx-auto text-center">
+                <h3 class="text-4xl font-bold text-gray-800 dark:text-white mb-8">
+                    Biz bilan <span class="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Bog'laning</span>
+                </h3>
+                
+                <div class="max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+                    <div class="space-y-6">
+                        <div class="flex items-center justify-center space-x-4 text-2xl font-bold text-primary">
+                            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                            </svg>
+                            <a href="tel:+998995115154" class="hover:text-purple-700 transition-colors">+99899 511 51 54</a>
+                        </div>
+                        
+                        <p class="text-gray-600 dark:text-gray-300 text-lg mb-6">
+                            Buyurtma berish va batafsil ma'lumot olish uchun bizga murojaat qiling
+                        </p>
+
+                        <!-- Social Media Order Buttons -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                            <!-- Telegram Order Button -->
+                            <button id="telegramOrderBtn" class="flex items-center justify-center space-x-3 bg-blue-500 hover:bg-blue-600 text-white py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                                </svg>
+                                <div class="text-left">
+                                    <div class="text-sm font-semibold">TELEGRAMDAN</div>
+                                    <div class="text-xs">BUYURTMA BERISH ✅</div>
+                                </div>
+                            </button>
+
+                            <!-- WhatsApp Order Button -->
+                            <button id="whatsappOrderBtn" class="flex items-center justify-center space-x-3 bg-green-500 hover:bg-green-600 text-white py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.55
